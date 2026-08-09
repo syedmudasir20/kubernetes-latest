@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hostpath-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hostpath-demo
+  template:
+    metadata:
+      labels:
+        app: hostpath-demo
+    spec:
+      nodeName: eoc-node1
+      containers:
+      - name: test-container
+        image: nginx
+        volumeMounts:
+        - mountPath: /usr/share/nginx/html
+          name: test-hostpath
+      volumes:
+      - name: test-hostpath
+        hostPath:
+          path: /data
+          type: DirectoryOrCreate
