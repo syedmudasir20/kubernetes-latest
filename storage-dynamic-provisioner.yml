@@ -25,11 +25,11 @@ spec:
             - name: PROVISIONER_NAME
               value: k8s-sigs.io/nfs-subdir-external-provisioner
             - name: NFS_SERVER
-              value: 192.168.100.11
+              value: kube-controller
             - name: NFS_PATH
               value: /srv/nfs/kubedata
       volumes:
         - name: nfs-client-root
           nfs:
-            server: 192.168.100.11
+            server: kube-controller
             path: /srv/nfs/kubedata
