@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: emptydir-multi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: emptydir-multi
+  template:
+    metadata:
+      labels:
+        app: emptydir-multi
+    spec:
+      containers:
+      - name: myvolumes-container-1
+        image: alpine
+        command: ["sh", "-c", "echo The Bench Container 1 is Running ; sleep 3600"]
+        volumeMounts:
+        - mountPath: /demo1
+          name: demo-volume
+
+      - name: myvolumes-container-2
+        image: alpine
+        command: ["sh", "-c", "echo The Bench Container 2 is Running ; sleep 3600"]
+        volumeMounts:
+        - mountPath: /demo2
+          name: demo-volume
+
+      - name: myvolumes-container-3
+        image: alpine
+        command: ["sh", "-c", "echo The Bench Container 3 is Running ; sleep 3600"]
+        volumeMounts:
+        - mountPath: /demo3
+          name: demo-volume
+
+      - name: readonly-viewer
+        image: alpine
+        command: ["sh", "-c", "echo 'Read-Only Viewer running'; sleep 3600"]
+        volumeMounts:
+        - mountPath: /readonly-data
+          name: demo-volume
+          readOnly: true
+
+      volumes:
+      - name: demo-volume
+        emptyDir: {}
