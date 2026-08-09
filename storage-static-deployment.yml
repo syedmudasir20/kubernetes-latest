@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nfs-static-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nfs-static
+  template:
+    metadata:
+      labels:
+        app: nfs-static
+    spec:
+      containers:
+      - name: myfrontend
+        image: nginx
+        volumeMounts:
+        - mountPath: /usr/share/nginx/html
+          name: mypod-data
+      volumes:
+      - name: mypod-data
+        persistentVolumeClaim:
+          claimName: nfs-static-claim1
