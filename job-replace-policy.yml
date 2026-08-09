@@ -1,0 +1,30 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: replace-policy-job
+spec:
+  completions: 3
+  parallelism: 1
+  completionMode: Indexed
+  podReplacementPolicy: Failed
+  template:
+    metadata:
+      labels:
+        jobgroup: replace-policy-lab
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: busybox
+        image: busybox
+        command:
+        - /bin/sh
+        - -c
+        - |
+          echo "Index: $JOB_COMPLETION_INDEX"
+          sleep 5
+          exit 0
+        env:
+        - name: JOB_COMPLETION_INDEX
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.annotations['batch.kubernetes.io/job-completion-index']
