@@ -12,7 +12,7 @@ spec:
       labels:
         app: hostpath-demo
     spec:
-      nodeName: eoc-node1
+      nodeName: kube-node1
       containers:
       - name: test-container
         image: nginx
